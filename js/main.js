@@ -1,4 +1,5 @@
 /// ========= Local Storage section
+
 const userName = document.querySelector('.name')
 
 function setLocalStorage() {
@@ -14,8 +15,13 @@ function getLocalStorage() {
 window.addEventListener('load', getLocalStorage)
 
 /// ========= Date section
+
 const date = document.querySelector('.date')
 let newDate = new Date()
+
+function currentHour() {
+  return new Date().getHours()
+}
 
 function showDate() {
   newDate = new Date()
@@ -25,8 +31,8 @@ function showDate() {
 }
 
 /// ========= Greeting section
+
 const userGreeting = document.querySelector('.greeting')
-const currentHour = newDate.getHours();
 
 function getTimeOfDay(hour) {
   if (hour >= 0 && hour < 6) {
@@ -41,11 +47,12 @@ function getTimeOfDay(hour) {
 }
 
 function showGreeting() {
-  const greetingText = `Good ${getTimeOfDay(currentHour)}`
+  const greetingText = `Good ${getTimeOfDay(currentHour())}`
   return userGreeting.textContent = greetingText
 }
 
 /// ========= Time section
+
 const time = document.querySelector('.time')
 
 function showTime() {
@@ -59,7 +66,8 @@ function showTime() {
   
 showTime()
 
-/// ========= Slider section
+/// ========= Slider section 
+
 const slideNext = document.querySelector('.slide-next')
 const slidePrev = document.querySelector('.slide-prev')
 
@@ -93,7 +101,7 @@ slidePrev.addEventListener('click', getSlidePrev)
 
 function setBg() {
   let bgNum = randomNum
-  let timeOfDay = getTimeOfDay(currentHour)
+  let timeOfDay = getTimeOfDay(currentHour())
   let img = new Image();
   img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg`
   img.onload = () => {
@@ -102,3 +110,25 @@ function setBg() {
 }
 
 setBg()
+
+/// ========= Weather section
+
+const userCity = document.querySelector('.city')
+const weatherIcon = document.querySelector('.weather-icon')
+const temperature = document.querySelector('.temperature')
+const weatherDescription = document.querySelector('.weather-description')
+
+userCity.addEventListener('change', getWeather)
+
+
+async function getWeather() {
+  let url = `https://api.openweathermap.org/data/2.5/weather?q=${userCity.value}&lang=en&appid=08983b23d3ae989b57d8a4f5432db702&units=metric`
+  let res = await fetch(url)
+  let data = await res.json()
+  weatherIcon.className = 'weather-icon owf'
+  weatherIcon.classList.add(`owf-${data.weather[0].id}`)
+  temperature.textContent = `${data.main.temp}°C`
+  weatherDescription.textContent = data.weather[0].description
+}
+
+getWeather()
