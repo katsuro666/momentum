@@ -1,3 +1,5 @@
+import playList from './playList.js';
+
 /// ========= Local Storage section
 
 const userName = document.querySelector('.name')
@@ -150,3 +152,56 @@ async function getQuotes() {
   quoteAuthor.textContent = data[randomNumber].author
 }
 getQuotes()
+
+/// ========= Audio player section
+
+const audio = document.querySelector('audio')
+const playButton = document.querySelector('.play')
+const playPrevButton = document.querySelector('.play-prev')
+const playNextButton = document.querySelector('.play-next')
+const playListContainer = document.querySelector('.play-list')
+
+let isPlay = false
+let playNum = 0
+
+playButton.addEventListener('click', playAudio)
+
+function togglePlay() {
+  if (isPlay) {
+  playButton.classList.add('pause')
+  } else {
+    playButton.classList.remove('pause')
+  }  
+}
+
+function playAudio() {
+  if (!isPlay) {
+    audio.src = playList[playNum].src
+    audio.currentTime = 0
+    audio.play()
+    isPlay = true
+    togglePlay()
+  } else {
+    audio.pause()
+    isPlay = false
+    togglePlay()
+  }
+}
+
+function playNext() {
+  playAudio()
+}
+function playPrev() {
+  playAudio()
+}
+
+playNextButton.addEventListener('click', playNext)
+playPrevButton.addEventListener('click', playPrev)
+
+playList.forEach(el => {
+  let li = document.createElement('li')
+  li.classList.add('play-item')
+  li.textContent = el.title
+  playListContainer.append(li)
+  // console.log(el.title)
+})
