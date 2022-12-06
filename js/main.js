@@ -206,17 +206,35 @@ function getSlidePrev() {
 slideNext.addEventListener('click', getSlideNext)
 slidePrev.addEventListener('click', getSlidePrev)
 
-function setBg() {
-  let bgNum = randomNum
+// function setBg() {
+//   let bgNum = randomNum
+//   let timeOfDay = getTimeOfDay(currentHour())
+//   let img = new Image();
+//   img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg`
+//   img.onload = () => {
+//     document.body.style.backgroundImage = `url(https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg)`
+//   }
+// }
+// // setBg()
+
+
+
+/// ========= API BACKGROUND section
+
+async function setBgAPI() {
   let timeOfDay = getTimeOfDay(currentHour())
+  const apiUrl = `https://api.unsplash.com/photos/random?orientation=landscape&query=${timeOfDay}&client_id=Ly8qHaqhTrN5wcOPTxKNJdXSVpBB34su6ztYTBhQIik`
+  const res = await fetch(apiUrl);
+  const data = await res.json();
+  const imgUrl = data.urls.regular
   let img = new Image();
-  img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg`
+  img.src = imgUrl
   img.onload = () => {
-    document.body.style.backgroundImage = `url(https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg)`
+    document.body.style.backgroundImage = `url(${imgUrl})`
   }
 }
+setBgAPI()
 
-setBg()
 
 /// ========= Weather section
 
@@ -239,6 +257,7 @@ async function getWeather() {
 }
 
 getWeather()
+
 
 /// ========= Quote of the day section
 
@@ -320,10 +339,22 @@ function playAudio() {
 }
 
 function playNext() {
-  playAudio()
+  audio.pause()
+  audio.src = playList[playNum + 1].src
+  audio.currentTime = 0
+  audio.play()
+  isPlay = true
+  playNum += 1
+  togglePlay()
 }
 function playPrev() {
-  playAudio()
+  audio.pause()
+  audio.src = playList[playNum - 1].src
+  audio.currentTime = 0
+  audio.play()
+  isPlay = true
+  playNum -= 1
+  togglePlay()
 }
 
 playNextButton.addEventListener('click', playNext)
@@ -334,5 +365,4 @@ playList.forEach(el => {
   li.classList.add('play-item')
   li.textContent = el.title
   playListContainer.append(li)
-  // console.log(el.title)
 })
