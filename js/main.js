@@ -184,6 +184,12 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// ===========================
+
+// Turn this section ON when you need images from GitHub (static 10 images per time of day), not from Unsplash
+
+// ===========================
+
 let randomNum = getRandomInt(10, 20)
 
 function getSlideNext() {
@@ -206,22 +212,22 @@ function getSlidePrev() {
 slideNext.addEventListener('click', getSlideNext)
 slidePrev.addEventListener('click', getSlidePrev)
 
-// function setBg() {
-//   let bgNum = randomNum
-//   let timeOfDay = getTimeOfDay(currentHour())
-//   let img = new Image();
-//   img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg`
-//   img.onload = () => {
-//     document.body.style.backgroundImage = `url(https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg)`
-//   }
-// }
-// // setBg()
+function setBg() {
+  let bgNum = randomNum
+  let timeOfDay = getTimeOfDay(currentHour())
+  let img = new Image();
+  img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg`
+  img.onload = () => {
+    document.body.style.backgroundImage = `url(https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg)`
+  }
+}
+setBg()
 
 
 
 /// ========= API BACKGROUND section
 
-async function setBgAPI() {
+/* async function setBgAPI() {
   let timeOfDay = getTimeOfDay(currentHour())
   const apiUrl = `https://api.unsplash.com/photos/random?orientation=landscape&query=${timeOfDay}&client_id=Ly8qHaqhTrN5wcOPTxKNJdXSVpBB34su6ztYTBhQIik`
   const res = await fetch(apiUrl);
@@ -233,8 +239,19 @@ async function setBgAPI() {
     document.body.style.backgroundImage = `url(${imgUrl})`
   }
 }
-setBgAPI()
 
+// setBgAPI()
+
+function getSlideNext() {
+  setBgAPI()
+}
+function getSlidePrev() {
+  setBgAPI()
+}
+
+slideNext.addEventListener('click', getSlideNext)
+slidePrev.addEventListener('click', getSlidePrev)
+ */
 
 /// ========= Weather section
 
