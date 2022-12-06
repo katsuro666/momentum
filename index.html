@@ -11,7 +11,7 @@
 
   <body>
     <header class="header">
-      <div class="player">
+      <div class="player hide-from-settings">
         <audio src=""></audio>
         <div class="player-controls">
           <button class="play-prev player-icon"></button>
@@ -73,59 +73,59 @@
       <div>
         <div class="settings__menu settings-hide">
           <div class="settings__item">
-            <label class="settings__switch" for="settings--time">
-              <input type="checkbox" id="settings--time" />
+            <label class="settings__switch settings--time" for="time">
+              <input type="checkbox" id="time" checked />
               <div class="slider round"></div>
             </label>
-            <span>Time</span>
+            <span class="settings--time-span">Time</span>
           </div>
 
           <div class="settings__item">
-            <label class="settings__switch" for="settings--date">
-              <input type="checkbox" id="settings--date" />
+            <label class="settings__switch settings--date" for="date">
+              <input type="checkbox" id="date" checked />
               <div class="slider round"></div>
             </label>
-            <span>Date</span>
+            <span class="settings--date-span">Date</span>
           </div>
 
           <div class="settings__item">
-            <label class="settings__switch" for="settings--greeting">
-              <input type="checkbox" id="settings--greeting" />
+            <label class="settings__switch settings--greeting" for="greeting">
+              <input type="checkbox" id="greeting" checked />
               <div class="slider round"></div>
             </label>
-            <span>Greeting</span>
+            <span class="settings--greeting-span">Greeting</span>
           </div>
 
           <div class="settings__item">
-            <label class="settings__switch" for="settings--quote">
-              <input type="checkbox" id="settings--quote" />
+            <label class="settings__switch settings--quote" for="quote">
+              <input type="checkbox" id="quote" checked />
               <div class="slider round"></div>
             </label>
-            <span>Quote of the day</span>
+            <span class="settings--quote-span">Quote of the day</span>
           </div>
 
           <div class="settings__item">
-            <label class="settings__switch" for="settings--weather">
-              <input type="checkbox" id="settings--weather" />
+            <label class="settings__switch settings--weather" for="weather">
+              <input type="checkbox" id="weather" checked />
               <div class="slider round"></div>
             </label>
-            <span>Weather</span>
+            <span class="settings--weather-span">Weather</span>
           </div>
 
           <div class="settings__item">
-            <label class="settings__switch" for="settings--audio">
-              <input type="checkbox" id="settings--audio" />
+            <label class="settings__switch settings--audio" for="audio">
+              <input type="checkbox" id="audio" />
               <div class="slider round"></div>
             </label>
-            <span>Audio player</span>
+            <span class="settings--audio-span">Audio player</span>
           </div>
 
           <div class="settings__item">
-            <label class="settings__switch" for="settings--todo">
-              <input type="checkbox" id="settings--todo" />
+            <label class="settings__switch settings--todo" for="todo">
+              <input type="checkbox" id="todo" checked />
               <div class="slider round"></div>
             </label>
-            <span>To do</span>
+            <span class="settings--todo-span">To do</span>
           </div>
         </div>
       </div>

@@ -45,6 +45,7 @@ langRussian.addEventListener('click', function() {
   dropdownToggle()
   getWeather()
   newQuote()
+  localizeSettings()
 })
 langSpanish.addEventListener('click', function() {
   currentLang.textContent = langSpanish.textContent
@@ -55,6 +56,7 @@ langSpanish.addEventListener('click', function() {
   dropdownToggle()
   getWeather()
   newQuote()
+  localizeSettings()
 })
 langEnglish.addEventListener('click', function() {
   currentLang.textContent = langEnglish.textContent
@@ -65,6 +67,7 @@ langEnglish.addEventListener('click', function() {
   dropdownToggle()
   getWeather()
   newQuote()
+  localizeSettings()
 })
 
 document.addEventListener('click', e => {
@@ -255,6 +258,7 @@ slidePrev.addEventListener('click', getSlidePrev)
 
 /// ========= Weather section
 
+const weather = document.querySelector('.weather')
 const userCity = document.querySelector('.city')
 const weatherIcon = document.querySelector('.weather-icon')
 const temperature = document.querySelector('.temperature')
@@ -322,6 +326,7 @@ getQuotesEN()
 
 /// ========= Audio player section
 
+const audioPlayer = document.querySelector('.player')
 const audio = document.querySelector('audio')
 const playButton = document.querySelector('.play')
 const playPrevButton = document.querySelector('.play-prev')
@@ -383,3 +388,80 @@ playList.forEach(el => {
   li.textContent = el.title
   playListContainer.append(li)
 })
+
+/// ========= Settings section
+
+const settingsGear = document.querySelector('.settings')
+const settingsMenu = document.querySelector('.settings__menu')
+
+const timeToggleSwitch = document.querySelector('.settings--time')
+const timeLabel = document.querySelector('.settings--time-span')
+const newTimeLabel = document.getElementById('time')
+
+
+const dateToggleSwitch = document.querySelector('.settings--date')
+const dateLabel = document.querySelector('.settings--date-span')
+
+const greetingToggleSwitch = document.querySelector('.settings--greeting')
+const greetingLabel = document.querySelector('.settings--greeting-span')
+
+const quoteToggleSwitch = document.querySelector('.settings--quote')
+const quoteLabel = document.querySelector('.settings--quote-span')
+
+const weatherToggleSwitch = document.querySelector('.settings--weather')
+const weatherLabel = document.querySelector('.settings--weather-span')
+
+const audioToggleSwitch = document.querySelector('.settings--audio')
+const audioLabel = document.querySelector('.settings--audio-span')
+
+const todoToggleSwitch = document.querySelector('.settings--todo')
+const todoLabel = document.querySelector('.settings--todo-span')
+
+function toggleSettings() {
+  settingsMenu.classList.toggle('settings-hide')
+}
+
+settingsGear.addEventListener('click', toggleSettings)
+
+function localizeSettings() {
+  if (pageLang === 'en') {
+    timeLabel.textContent = 'Time'
+    dateLabel.textContent = 'Date'
+    greetingLabel.textContent = 'Greeting'
+    quoteLabel.textContent = 'Quote of the day'
+    weatherLabel.textContent = 'Weather'
+    audioLabel.textContent = 'Audio player'
+    todoLabel.textContent = 'To do'
+  } else if (pageLang === 'ru') {
+    timeLabel.textContent = 'Время'
+    dateLabel.textContent = 'Дата'
+    greetingLabel.textContent = 'Приветствие'
+    quoteLabel.textContent = 'Цитата дня'
+    weatherLabel.textContent = 'Погода'
+    audioLabel.textContent = 'Аудиоплеер'
+    todoLabel.textContent = 'Тудушка'
+  } else if (pageLang === 'es') {
+    timeLabel.textContent = 'Tiempo'
+    dateLabel.textContent = 'Fecha'
+    greetingLabel.textContent = 'Saludo'
+    quoteLabel.textContent = 'Cita del día'
+    weatherLabel.textContent = 'Clima'
+    audioLabel.textContent = 'Reproductor de música'
+    todoLabel.textContent = 'Que hacer'
+  }
+}
+
+function toggleElement(el) {
+  el.classList.toggle('hide-from-settings')
+} 
+
+timeToggleSwitch.addEventListener('change', e => toggleElement(time))
+dateToggleSwitch.addEventListener('change', e => toggleElement(date))
+greetingToggleSwitch.addEventListener('change', e => toggleElement(userGreeting))
+quoteToggleSwitch.addEventListener('change', e => {
+  toggleElement(quote)
+  toggleElement(quoteAuthor)
+  toggleElement(changeQuote)
+})
+weatherToggleSwitch.addEventListener('change', e => toggleElement(weather))
+audioToggleSwitch.addEventListener('change', e => toggleElement(audioPlayer))
