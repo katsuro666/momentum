@@ -220,6 +220,7 @@ body {
 }
 
 .greeting-container {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: stretch;
@@ -227,6 +228,7 @@ body {
   min-height: 48px;
   width: 100vw;
   font-size: 40px;
+  transition: all 1s ease;
 }
 
 .greeting {
@@ -341,7 +343,7 @@ body {
   border: none;
   color: #ffffff;
   opacity: 0.5;
-  scale: 0.9;
+  scale: 0.7;
   background: url('../assets/svg/settings-gear.svg') no-repeat center;
   transition: all 0.3s ease;
 }
@@ -368,6 +370,7 @@ body {
 
 .settings-hide {
   opacity: 0;
+  transform: scale(0) translate(-200%, 100%);
 }
 
 .settings__item {
@@ -432,6 +435,18 @@ input:checked + .slider:before {
 
 .hide-from-settings {
   opacity: 0;
+  
+}
+
+.greeting-placeholder {
+  height: 60px;
+  font-size: 40px;
+  padding: 10px;
+  position: absolute;
+  left: 50%;
+  top: 0%;
+  opacity: 0.5;
+  z-index: -1;
 }
 
 @media (max-width: 768px) {
@@ -454,3 +469,4 @@ input:checked + .slider:before {
     padding: 5px;
   }
 }
+

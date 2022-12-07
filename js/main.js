@@ -4,14 +4,21 @@ import playList from './playList.js';
 
 const userName = document.querySelector('.name')
 
+
 function setLocalStorage() {
   localStorage.setItem('userName', userName.value)
+  localStorage.setItem('userCity', userCity.value)
 }
 window.addEventListener('beforeunload', setLocalStorage)
+
 
 function getLocalStorage() {
   if (localStorage.getItem('userName')) {
     userName.value = localStorage.getItem('userName')
+  }
+  if (localStorage.getItem('userCity')) {
+    userCity.value = localStorage.getItem('userCity')
+    getWeather()
   }
 }
 window.addEventListener('load', getLocalStorage)
@@ -21,14 +28,15 @@ window.addEventListener('load', getLocalStorage)
 const dropdownMenu = document.querySelector('.dropdown__content')
 // const dropdownLang = document.querySelectorAll('.dropdown-language')
 const currentLang = document.querySelector('.current-language')
-// const hideLang = document.querySelector('.language-hidden')
 
 const langEnglish = document.querySelector('.lang-en')
 const langRussian = document.querySelector('.lang-ru')
 const langSpanish = document.querySelector('.lang-es')
 
 let pageLang = 'en'
+
 currentLang.textContent = langEnglish.textContent
+
 
 function dropdownToggle() {
   dropdownMenu.classList.toggle('dropdown--hidden')
@@ -41,11 +49,13 @@ langRussian.addEventListener('click', function() {
   langEnglish.classList.remove('language-hidden')
   langSpanish.classList.remove('language-hidden')
   langRussian.classList.add('language-hidden')
+  console.log(userName.placeholder)
   pageLang = 'ru'
   dropdownToggle()
   getWeather()
   newQuote()
   localizeSettings()
+  showPlaceholder()
 })
 langSpanish.addEventListener('click', function() {
   currentLang.textContent = langSpanish.textContent
@@ -57,6 +67,8 @@ langSpanish.addEventListener('click', function() {
   getWeather()
   newQuote()
   localizeSettings()
+  showPlaceholder()
+
 })
 langEnglish.addEventListener('click', function() {
   currentLang.textContent = langEnglish.textContent
@@ -68,6 +80,7 @@ langEnglish.addEventListener('click', function() {
   getWeather()
   newQuote()
   localizeSettings()
+  showPlaceholder()
 })
 
 document.addEventListener('click', e => {
@@ -103,7 +116,30 @@ function showDate() {
 
 /// ========= Greeting section
 
+const greetingContainer = document.querySelector('.greeting-container')
 const userGreeting = document.querySelector('.greeting')
+const greetingPlaceholder = document.querySelector('.greeting-placeholder')
+
+function setPlaceholder() {
+  if (pageLang === 'en') {
+    greetingPlaceholder.textContent = '[Enter name]'
+  } else if (pageLang === 'ru') {
+    greetingPlaceholder.textContent = '[Введите имя]'
+  } else if (pageLang === 'es') {
+    greetingPlaceholder.textContent = '[Ingrese su nombre]'
+  }
+}
+function showPlaceholder() {
+  console.log('pik')
+  if (userName.value === '') {
+    setPlaceholder()
+  } else {
+    greetingPlaceholder.textContent = ''
+  }
+}
+showPlaceholder()
+
+userName.addEventListener('input', showPlaceholder)
 
 function getTimeOfDay(hour) {
   if (hour >= 0 && hour < 6) {
@@ -112,7 +148,7 @@ function getTimeOfDay(hour) {
     return 'morning'
   } else if (hour >= 12 && hour < 18) {
     return 'afternoon'
-  } else {
+  } else if (hour >=18 && hour < 24) {
     return 'evening'
   } 
 }
@@ -124,7 +160,7 @@ function getTimeOfDayRU(hour) {
     return 'Доброе утро'
   } else if (hour >= 12 && hour < 18) {
     return 'Добрый день'
-  } else {
+  } else if (hour >=18 && hour < 24) {
     return 'Добрый вечер'
   } 
 }
@@ -136,22 +172,18 @@ function getTimeOfDayES(hour) {
     return 'Buenos dias'
   } else if (hour >= 12 && hour < 18) {
     return 'Buenas tardes'
-  } else {
+  } else if (hour >=18 && hour < 24) {
     return 'Buenas noches'
   } 
 }
 
 const greetingTranslation = {
   'English': `Good ${getTimeOfDay(currentHour())},`,
-  'Russian': `${getTimeOfDayRU(currentHour)},`,
-  'Spanish': `${getTimeOfDayES(currentHour)},`,
+  'Russian': `${getTimeOfDayRU(currentHour())},`,
+  'Spanish': `${getTimeOfDayES(currentHour())},`,
 }
 
-// function showGreeting(lang) {
-//   userGreeting.textContent = greetingTranslation[`${lang}`]
-// }
-
-function showaGreeting() {
+function showGreeting() {
   if (pageLang === 'en') {
     userGreeting.textContent = greetingTranslation['English']
   } else if (pageLang === 'ru') {
@@ -170,7 +202,7 @@ function showTime() {
   let currentTime = newDate.toLocaleTimeString()
   time.textContent = currentTime
   showDate()
-  showaGreeting()
+  showGreeting()
   setTimeout(showTime, 1000)
 }
   
@@ -189,24 +221,31 @@ function getRandomInt(min, max) {
 
 // ===========================
 
-// Turn this section ON when you need images from GitHub (static 10 images per time of day), not from Unsplash
+// Turn this section ON when you need images from GitHub (static 20 images per time of day), not from Unsplash
 
 // ===========================
 
-let randomNum = getRandomInt(10, 20)
+function getRandomBgNumber() {
+  let num = getRandomInt(1, 20)
+  if (num < 10) {
+    return `0${num}`
+  } return num
+}
+
+let randomNum = getRandomBgNumber()
 
 function getSlideNext() {
   if (randomNum < 20) {
     randomNum += 1
   } else if (randomNum == 20) {
-    randomNum = 10
+    randomNum = 1
   }
   setBg()
 }
 function getSlidePrev() {
-  if (randomNum > 10) {
+  if (randomNum > 1) {
     randomNum -= 1
-  } else if (randomNum == 10) {
+  } else if (randomNum == 1) {
     randomNum = 20
   }
   setBg()
@@ -216,7 +255,7 @@ slideNext.addEventListener('click', getSlideNext)
 slidePrev.addEventListener('click', getSlidePrev)
 
 function setBg() {
-  let bgNum = randomNum
+  let bgNum = getRandomBgNumber()
   let timeOfDay = getTimeOfDay(currentHour())
   let img = new Image();
   img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg`
@@ -263,8 +302,10 @@ const userCity = document.querySelector('.city')
 const weatherIcon = document.querySelector('.weather-icon')
 const temperature = document.querySelector('.temperature')
 const weatherDescription = document.querySelector('.weather-description')
+const wind = document.querySelector('.wind')
+const humidity = document.querySelector('.humidity')
+const feelsLike = document.querySelector('.feels-like')
 
-userCity.value = 'Moscow'
 userCity.addEventListener('change', getWeather)
 
 async function getWeather() {
@@ -273,12 +314,24 @@ async function getWeather() {
   let data = await res.json()
   weatherIcon.className = 'weather-icon owf'
   weatherIcon.classList.add(`owf-${data.weather[0].id}`)
-  temperature.textContent = `${data.main.temp}°C`
+  temperature.textContent = `${Math.round(data.main.temp)}°C`
   weatherDescription.textContent = data.weather[0].description
+  if (pageLang === 'en') {
+    feelsLike.textContent = `Feels like ${Math.round(data.main.feels_like)}°C`
+    wind.textContent = `Wind speed: ${Math.round(data.wind.speed)} m/s`
+    humidity.textContent = `Humidity: ${data.main.humidity}%`
+  } else if (pageLang === 'ru') {
+    feelsLike.textContent = `Ощущается как ${Math.round(data.main.feels_like)}°C`
+    wind.textContent = `Скорость ветра: ${Math.round(data.wind.speed)} м/с`
+    humidity.textContent = `Влажность: ${data.main.humidity}%`
+  } else if (pageLang === 'es') {
+    feelsLike.textContent = `Se siente como ${Math.round(data.main.feels_like)}°C`
+    wind.textContent = `Velocidad del viento: ${Math.round(data.wind.speed)} m/s`
+    humidity.textContent = `Humedad: ${data.main.humidity}%`
+  }
 }
 
 getWeather()
-
 
 /// ========= Quote of the day section
 
@@ -322,7 +375,7 @@ async function getQuotesES() {
   quote.textContent = data[randomNumber].text
   quoteAuthor.textContent = data[randomNumber].author
 }
-getQuotesEN()
+newQuote()
 
 /// ========= Audio player section
 
@@ -421,6 +474,8 @@ function toggleSettings() {
   settingsMenu.classList.toggle('settings-hide')
 }
 
+console.log(userCity.value)
+
 settingsGear.addEventListener('click', toggleSettings)
 
 function localizeSettings() {
@@ -457,7 +512,7 @@ function toggleElement(el) {
 
 timeToggleSwitch.addEventListener('change', e => toggleElement(time))
 dateToggleSwitch.addEventListener('change', e => toggleElement(date))
-greetingToggleSwitch.addEventListener('change', e => toggleElement(userGreeting))
+greetingToggleSwitch.addEventListener('change', e => toggleElement(greetingContainer))
 quoteToggleSwitch.addEventListener('change', e => {
   toggleElement(quote)
   toggleElement(quoteAuthor)
@@ -465,3 +520,127 @@ quoteToggleSwitch.addEventListener('change', e => {
 })
 weatherToggleSwitch.addEventListener('change', e => toggleElement(weather))
 audioToggleSwitch.addEventListener('change', e => toggleElement(audioPlayer))
+
+
+// var h1 = document.querySelector('.typing');
+// let typing = document.querySelector('.typing');
+// let namesEN = [
+//   'what is your name?',
+//   'Alice?',
+//   'Harry?',
+//   'Jacob?',
+//   'Julia?',
+//   'Michael?',
+//   'Matthew?',
+//   'Emily?',
+//   'Ethan?',
+//   'Elizabeth',
+//   'Emma?',
+// ];
+// let i = 0;
+// let namesENArray = namesEN[i].split('');
+// // console.log(strArray)
+// var loopTimer;
+
+// function type() {
+//   if(namesENArray.length > 0){
+//     typing.innerHTML += namesENArray.shift();
+//   }
+//   else if(namesENArray.length === 0){
+//     namesENArray = 0;
+//     i++
+//     if(i === namesEN.length) {
+//       i = 0;
+//     }
+//     setTimeout(function(){
+//       typing.innerHTML = '';
+//       namesENArray = namesEN[i].split('');
+//     }, 2000);
+//   }
+//   loopTimer = setTimeout(type, 30);
+// }
+// type();
+
+/* let namesEN = [
+  'what is your name?',
+  'Alice?',
+  'Harry?',
+  'Jacob?',
+  'Julia?',
+  'Michael?',
+  'Matthew?',
+  'Emily?',
+  'Ethan?',
+  'Elizabeth',
+  'Emma?',
+];
+let namesRU = [
+  'как тебя зовут?',
+  'Артём?',
+  'Ольга?',
+  'Михаил?',
+  'Александр?',
+  'Анастасия?',
+  'Елена?',
+  'Еагений?',
+  'Олег?',
+  'Юлия?',
+  'Егор?',
+]
+let namesES = [
+  '¿Cómo te llamas?',
+  'Daniel?',
+  'Pablo?',
+  'Julia?',
+  'David?',
+  'Alejandro?',  
+  'Sofía?',
+  'Lucia?',
+  'Hugo?',
+  'Maria?',
+  'Àlex?',
+]
+
+let typing = document.querySelector('.typing');
+
+function typingStr() {
+  let i = 0;
+  let loopTimer;
+  let nameArr;
+  let names;
+
+  if(pageLang === 'en') {
+    names = namesEN
+    nameArr = namesEN[i].split('')
+  } else if (pageLang === 'ru') {
+    names = namesRU
+    nameArr = namesRU[i].split('')
+  } else if (pageLang === 'es') {
+    names = namesES
+    nameArr = namesES[i].split('')
+  }
+  let currentPageLang = pageLang
+
+  function type() {
+    if(nameArr.length > 0){
+      typing.innerHTML += nameArr.shift();
+    }
+    else if(nameArr.length === 0){
+      nameArr = 0;
+      i++
+      if(i === nameArr.length) {
+        i = 0;
+      }
+      setTimeout(function(){
+        typing.innerHTML = '';
+        nameArr = names[i].split('');
+      }, 2000);
+    }
+    loopTimer = setTimeout(type, 30);
+  }
+  
+  if (currentPageLang === pageLang) {
+    type();
+  } else return
+}
+typingStr(); */
