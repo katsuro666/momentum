@@ -8,6 +8,7 @@ const userName = document.querySelector('.name')
 function setLocalStorage() {
   localStorage.setItem('userName', userName.value)
   localStorage.setItem('userCity', userCity.value)
+  localStorage.setItem('pageLangOnLoad', pageLang)
 }
 window.addEventListener('beforeunload', setLocalStorage)
 
@@ -19,6 +20,13 @@ function getLocalStorage() {
   if (localStorage.getItem('userCity')) {
     userCity.value = localStorage.getItem('userCity')
     getWeather()
+  }
+  if (localStorage.getItem('pageLangOnLoad') !== pageLang) {
+    currentLang.textContent = localStorage.getItem('pageLangOnLoad')
+    pageLang = localStorage.getItem('pageLangOnLoad')
+    showPlaceholder()
+    newQuote()
+    localizeSettings()
   }
 }
 window.addEventListener('load', getLocalStorage)
@@ -34,15 +42,27 @@ const langRussian = document.querySelector('.lang-ru')
 const langSpanish = document.querySelector('.lang-es')
 
 let pageLang = 'en'
+let pageLangOnLoad
 
-currentLang.textContent = langEnglish.textContent
-
+currentLang.textContent = pageLangOnLoad || pageLang
 
 function dropdownToggle() {
   dropdownMenu.classList.toggle('dropdown--hidden')
 }
 currentLang.addEventListener('click', dropdownToggle)
 
+window.addEventListener('load', e => {
+  console.log(pageLang)
+  if (pageLang === 'ru') {
+    langEnglish.classList.remove('language-hidden')
+    langSpanish.classList.remove('language-hidden')
+    langRussian.classList.add('language-hidden')
+  } else if (pageLang === 'es') {
+    langEnglish.classList.remove('language-hidden')
+    langRussian.classList.remove('language-hidden')
+    langSpanish.classList.add('language-hidden')
+  }
+})
 
 langRussian.addEventListener('click', function() {
   currentLang.textContent = langRussian.textContent
