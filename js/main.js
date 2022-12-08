@@ -30,7 +30,6 @@ function getLocalStorage() {
     } else if (localStorage.getItem('pageLangOnLoad') === null) {
       currentLang.textContent = 'en'
     }
-    
   }
 }
 
@@ -90,7 +89,6 @@ langSpanish.addEventListener('click', function() {
   newQuote()
   localizeSettings()
   showPlaceholder()
-
 })
 langEnglish.addEventListener('click', function() {
   currentLang.textContent = langEnglish.textContent
@@ -464,21 +462,28 @@ const settingsMenu = document.querySelector('.settings__menu')
 
 const timeToggleSwitch = document.querySelector('.settings--time')
 const timeLabel = document.querySelector('.settings--time-span')
+const timeCheckbox = document.querySelector('#time')
 
 const dateToggleSwitch = document.querySelector('.settings--date')
 const dateLabel = document.querySelector('.settings--date-span')
+const dateCheckbox = document.querySelector('#date')
 
 const greetingToggleSwitch = document.querySelector('.settings--greeting')
 const greetingLabel = document.querySelector('.settings--greeting-span')
+const greetingCheckbox = document.querySelector('#greeting')
 
 const quoteToggleSwitch = document.querySelector('.settings--quote')
 const quoteLabel = document.querySelector('.settings--quote-span')
+const quoteContainer = document.querySelector('.quote-container')
+const quoteCheckbox = document.querySelector('#quote')
 
 const weatherToggleSwitch = document.querySelector('.settings--weather')
 const weatherLabel = document.querySelector('.settings--weather-span')
+const weatherCheckbox = document.querySelector('#weather')
 
 const audioToggleSwitch = document.querySelector('.settings--audio')
 const audioLabel = document.querySelector('.settings--audio-span')
+const audioCheckbox = document.querySelector('#audio')
 
 function toggleSettings() {
   settingsMenu.classList.toggle('settings-hide')
@@ -515,13 +520,128 @@ function toggleElement(el) {
   el.classList.toggle('hide-from-settings')
 } 
 
-timeToggleSwitch.addEventListener('change', e => toggleElement(time))
-dateToggleSwitch.addEventListener('change', e => toggleElement(date))
-greetingToggleSwitch.addEventListener('change', e => toggleElement(greetingContainer))
-quoteToggleSwitch.addEventListener('change', e => {
-  toggleElement(quote)
-  toggleElement(quoteAuthor)
-  toggleElement(changeQuote)
+timeToggleSwitch.addEventListener('change', e => {
+  toggleElement(time)
+  if (time.classList.contains('hide-from-settings')) {
+    localStorage.setItem('time-inactive', true)    
+  } else {
+    localStorage.setItem('time-inactive', false)    
+  }
 })
-weatherToggleSwitch.addEventListener('change', e => toggleElement(weather))
-audioToggleSwitch.addEventListener('change', e => toggleElement(audioPlayer))
+
+dateToggleSwitch.addEventListener('change', e => {
+  toggleElement(date)
+  if (date.classList.contains('hide-from-settings')) {
+    localStorage.setItem('date-inactive', true)    
+  } else {
+    localStorage.setItem('date-inactive', false)    
+  }
+})
+
+greetingToggleSwitch.addEventListener('change', e => {
+  toggleElement(greetingContainer)
+  if (greetingContainer.classList.contains('hide-from-settings')) {
+    localStorage.setItem('greeting-inactive', true)    
+  } else {
+    localStorage.setItem('greeting-inactive', false)    
+  }
+})
+
+quoteToggleSwitch.addEventListener('change', e => {
+  toggleElement(quoteContainer)
+  if (quoteContainer.classList.contains('hide-from-settings')) {
+    localStorage.setItem('quote-inactive', true)    
+  } else {
+    localStorage.setItem('quote-inactive', false)    
+  }
+})
+
+weatherToggleSwitch.addEventListener('change', e => {
+  toggleElement(weather)
+  if (weather.classList.contains('hide-from-settings')) {
+    localStorage.setItem('weather-inactive', true)    
+  } else {
+    localStorage.setItem('weather-inactive', false)    
+  }
+})
+
+audioToggleSwitch.addEventListener('change', e => {
+  toggleElement(audioPlayer)
+  if (audioPlayer.classList.contains('hide-from-settings')) {
+    localStorage.setItem('audio-inactive', true)    
+  } else {
+    localStorage.setItem('audio-inactive', false)    
+  }
+})
+
+
+function initSettingsView() {
+  let hideTime = localStorage.getItem('time-inactive')
+  if (hideTime === 'true') {
+    time.classList.add('hide-from-settings')
+    timeCheckbox.checked = false
+  } 
+  if (hideTime === 'false'){
+    time.classList.remove('hide-from-settings')
+    timeCheckbox.checked = true
+  }
+
+  let hideDate = localStorage.getItem('date-inactive')
+  if (hideDate === 'true') {
+    date.classList.add('hide-from-settings')
+    dateCheckbox.checked = false
+  } 
+  if (hideDate === 'false'){
+    date.classList.remove('hide-from-settings')
+    dateCheckbox.checked = true
+  }
+
+  let hideGreeting = localStorage.getItem('greeting-inactive')
+  if (hideGreeting === 'true') {
+    greetingContainer.classList.add('hide-from-settings')
+    greetingCheckbox.checked = false
+  } 
+  if (hideGreeting === 'false'){
+    greetingContainer.classList.remove('hide-from-settings')
+    greetingCheckbox.checked = true
+  }
+
+  let hideQuote = localStorage.getItem('quote-inactive')
+  if (hideQuote === 'true') {
+    quoteContainer.classList.add('hide-from-settings')
+    quoteCheckbox.checked = false
+  } 
+  if (hideQuote === 'false'){
+    quoteContainer.classList.remove('hide-from-settings')
+    quoteCheckbox.checked = true
+  }
+
+  let hideWeather = localStorage.getItem('weather-inactive')
+  if (hideWeather === 'true') {
+    weather.classList.add('hide-from-settings')
+    weatherCheckbox.checked = false
+  } 
+  if (hideWeather === 'false'){
+    weather.classList.remove('hide-from-settings')
+    weatherCheckbox.checked = true
+  }
+
+  let hideAudio = localStorage.getItem('audio-inactive')
+  if (hideAudio === 'true') {
+    audioPlayer.classList.add('hide-from-settings')
+    audioCheckbox.checked = false
+  } 
+  if (hideAudio === 'false'){
+    audioPlayer.classList.remove('hide-from-settings')
+    audioCheckbox.checked = true
+  }
+}
+
+document.addEventListener('click', e => {
+ let isMenuClicked = e.composedPath().includes(settingsMenu)
+ if (e.target !== settingsGear && !isMenuClicked) {
+  settingsMenu.classList.add('settings-hide')
+ }
+})
+
+initSettingsView()

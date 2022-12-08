@@ -266,6 +266,10 @@ body {
   padding: 20px;
 }
 
+.quote-container {
+  transition: 0.3s;
+}
+
 .change-quote {
   margin-bottom: 30px;
   background-image: url('../assets/svg/reload.svg');
