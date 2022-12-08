@@ -4,18 +4,16 @@ import playList from './playList.js';
 
 const userName = document.querySelector('.name')
 
-
 function setLocalStorage() {
   localStorage.setItem('userName', userName.value)
   localStorage.setItem('userCity', userCity.value)
   localStorage.setItem('pageLangOnLoad', pageLang)
 }
-window.addEventListener('beforeunload', setLocalStorage)
-
 
 function getLocalStorage() {
   if (localStorage.getItem('userName')) {
     userName.value = localStorage.getItem('userName')
+    showPlaceholder()
   }
   if (localStorage.getItem('userCity')) {
     userCity.value = localStorage.getItem('userCity')
@@ -26,33 +24,32 @@ function getLocalStorage() {
     pageLang = localStorage.getItem('pageLangOnLoad')
     showPlaceholder()
     newQuote()
+    getWeather()
     localizeSettings()
   }
 }
+
+window.addEventListener('beforeunload', setLocalStorage)
 window.addEventListener('load', getLocalStorage)
 
 /// ========= Add other languages section
 
 const dropdownMenu = document.querySelector('.dropdown__content')
-// const dropdownLang = document.querySelectorAll('.dropdown-language')
 const currentLang = document.querySelector('.current-language')
-
 const langEnglish = document.querySelector('.lang-en')
 const langRussian = document.querySelector('.lang-ru')
 const langSpanish = document.querySelector('.lang-es')
 
 let pageLang = 'en'
-let pageLangOnLoad
 
-currentLang.textContent = pageLangOnLoad || pageLang
+currentLang.textContent = pageLang
 
 function dropdownToggle() {
   dropdownMenu.classList.toggle('dropdown--hidden')
 }
-currentLang.addEventListener('click', dropdownToggle)
 
+currentLang.addEventListener('click', dropdownToggle)
 window.addEventListener('load', e => {
-  console.log(pageLang)
   if (pageLang === 'ru') {
     langEnglish.classList.remove('language-hidden')
     langSpanish.classList.remove('language-hidden')
@@ -106,21 +103,18 @@ langEnglish.addEventListener('click', function() {
 document.addEventListener('click', e => {
   if (e.target !== dropdownMenu && e.target !== currentLang) {
     dropdownMenu.classList.add('dropdown--hidden')
-    // console.log(e.target)
   }
 });
 
 /// ========= Date section
 
 const date = document.querySelector('.date')
-let newDate = new Date()
 
 function currentHour() {
   return new Date().getHours()
 }
-
 function showDate() {
-  newDate = new Date()
+  let newDate = new Date()
   let options = { weekday: 'long', month: 'long', day: 'numeric' };
   if (pageLang === 'en') {
     let currentDate = newDate.toLocaleDateString('en-US', options)
@@ -150,7 +144,6 @@ function setPlaceholder() {
   }
 }
 function showPlaceholder() {
-  console.log('pik')
   if (userName.value === '') {
     setPlaceholder()
   } else {
@@ -172,7 +165,6 @@ function getTimeOfDay(hour) {
     return 'evening'
   } 
 }
-
 function getTimeOfDayRU(hour) {
   if (hour >= 0 && hour < 6) {
     return 'Доброй ночи'
@@ -184,7 +176,6 @@ function getTimeOfDayRU(hour) {
     return 'Добрый вечер'
   } 
 }
-
 function getTimeOfDayES(hour) {
   if (hour >= 0 && hour < 6) {
     return 'Buenas noches'
@@ -218,7 +209,7 @@ function showGreeting() {
 const time = document.querySelector('.time')
 
 function showTime() {
-  newDate = new Date()
+  let newDate = new Date()
   let currentTime = newDate.toLocaleTimeString()
   time.textContent = currentTime
   showDate()
@@ -245,7 +236,7 @@ function getRandomInt(min, max) {
 
 // ===========================
 
-function getRandomBgNumber() {
+/* function getRandomBgNumber() {
   let num = getRandomInt(1, 20)
   if (num < 10) {
     return `0${num}`
@@ -283,13 +274,12 @@ function setBg() {
     document.body.style.backgroundImage = `url(https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg)`
   }
 }
-setBg()
-
+setBg() */
 
 
 /// ========= API BACKGROUND section
 
-/* async function setBgAPI() {
+async function setBgAPI() {
   let timeOfDay = getTimeOfDay(currentHour())
   const apiUrl = `https://api.unsplash.com/photos/random?orientation=landscape&query=${timeOfDay}&client_id=Ly8qHaqhTrN5wcOPTxKNJdXSVpBB34su6ztYTBhQIik`
   const res = await fetch(apiUrl);
@@ -302,7 +292,7 @@ setBg()
   }
 }
 
-// setBgAPI()
+setBgAPI()
 
 function getSlideNext() {
   setBgAPI()
@@ -313,7 +303,7 @@ function getSlidePrev() {
 
 slideNext.addEventListener('click', getSlideNext)
 slidePrev.addEventListener('click', getSlidePrev)
- */
+
 
 /// ========= Weather section
 
@@ -469,8 +459,6 @@ const settingsMenu = document.querySelector('.settings__menu')
 
 const timeToggleSwitch = document.querySelector('.settings--time')
 const timeLabel = document.querySelector('.settings--time-span')
-const newTimeLabel = document.getElementById('time')
-
 
 const dateToggleSwitch = document.querySelector('.settings--date')
 const dateLabel = document.querySelector('.settings--date-span')
@@ -487,14 +475,9 @@ const weatherLabel = document.querySelector('.settings--weather-span')
 const audioToggleSwitch = document.querySelector('.settings--audio')
 const audioLabel = document.querySelector('.settings--audio-span')
 
-const todoToggleSwitch = document.querySelector('.settings--todo')
-const todoLabel = document.querySelector('.settings--todo-span')
-
 function toggleSettings() {
   settingsMenu.classList.toggle('settings-hide')
 }
-
-console.log(userCity.value)
 
 settingsGear.addEventListener('click', toggleSettings)
 
@@ -506,7 +489,6 @@ function localizeSettings() {
     quoteLabel.textContent = 'Quote of the day'
     weatherLabel.textContent = 'Weather'
     audioLabel.textContent = 'Audio player'
-    todoLabel.textContent = 'To do'
   } else if (pageLang === 'ru') {
     timeLabel.textContent = 'Время'
     dateLabel.textContent = 'Дата'
@@ -514,7 +496,6 @@ function localizeSettings() {
     quoteLabel.textContent = 'Цитата дня'
     weatherLabel.textContent = 'Погода'
     audioLabel.textContent = 'Аудиоплеер'
-    todoLabel.textContent = 'Тудушка'
   } else if (pageLang === 'es') {
     timeLabel.textContent = 'Tiempo'
     dateLabel.textContent = 'Fecha'
@@ -522,7 +503,6 @@ function localizeSettings() {
     quoteLabel.textContent = 'Cita del día'
     weatherLabel.textContent = 'Clima'
     audioLabel.textContent = 'Reproductor de música'
-    todoLabel.textContent = 'Que hacer'
   }
 }
 
@@ -540,127 +520,3 @@ quoteToggleSwitch.addEventListener('change', e => {
 })
 weatherToggleSwitch.addEventListener('change', e => toggleElement(weather))
 audioToggleSwitch.addEventListener('change', e => toggleElement(audioPlayer))
-
-
-// var h1 = document.querySelector('.typing');
-// let typing = document.querySelector('.typing');
-// let namesEN = [
-//   'what is your name?',
-//   'Alice?',
-//   'Harry?',
-//   'Jacob?',
-//   'Julia?',
-//   'Michael?',
-//   'Matthew?',
-//   'Emily?',
-//   'Ethan?',
-//   'Elizabeth',
-//   'Emma?',
-// ];
-// let i = 0;
-// let namesENArray = namesEN[i].split('');
-// // console.log(strArray)
-// var loopTimer;
-
-// function type() {
-//   if(namesENArray.length > 0){
-//     typing.innerHTML += namesENArray.shift();
-//   }
-//   else if(namesENArray.length === 0){
-//     namesENArray = 0;
-//     i++
-//     if(i === namesEN.length) {
-//       i = 0;
-//     }
-//     setTimeout(function(){
-//       typing.innerHTML = '';
-//       namesENArray = namesEN[i].split('');
-//     }, 2000);
-//   }
-//   loopTimer = setTimeout(type, 30);
-// }
-// type();
-
-/* let namesEN = [
-  'what is your name?',
-  'Alice?',
-  'Harry?',
-  'Jacob?',
-  'Julia?',
-  'Michael?',
-  'Matthew?',
-  'Emily?',
-  'Ethan?',
-  'Elizabeth',
-  'Emma?',
-];
-let namesRU = [
-  'как тебя зовут?',
-  'Артём?',
-  'Ольга?',
-  'Михаил?',
-  'Александр?',
-  'Анастасия?',
-  'Елена?',
-  'Еагений?',
-  'Олег?',
-  'Юлия?',
-  'Егор?',
-]
-let namesES = [
-  '¿Cómo te llamas?',
-  'Daniel?',
-  'Pablo?',
-  'Julia?',
-  'David?',
-  'Alejandro?',  
-  'Sofía?',
-  'Lucia?',
-  'Hugo?',
-  'Maria?',
-  'Àlex?',
-]
-
-let typing = document.querySelector('.typing');
-
-function typingStr() {
-  let i = 0;
-  let loopTimer;
-  let nameArr;
-  let names;
-
-  if(pageLang === 'en') {
-    names = namesEN
-    nameArr = namesEN[i].split('')
-  } else if (pageLang === 'ru') {
-    names = namesRU
-    nameArr = namesRU[i].split('')
-  } else if (pageLang === 'es') {
-    names = namesES
-    nameArr = namesES[i].split('')
-  }
-  let currentPageLang = pageLang
-
-  function type() {
-    if(nameArr.length > 0){
-      typing.innerHTML += nameArr.shift();
-    }
-    else if(nameArr.length === 0){
-      nameArr = 0;
-      i++
-      if(i === nameArr.length) {
-        i = 0;
-      }
-      setTimeout(function(){
-        typing.innerHTML = '';
-        nameArr = names[i].split('');
-      }, 2000);
-    }
-    loopTimer = setTimeout(type, 30);
-  }
-  
-  if (currentPageLang === pageLang) {
-    type();
-  } else return
-}
-typingStr(); */
