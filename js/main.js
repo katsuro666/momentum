@@ -295,7 +295,7 @@ async function setBgAPI() {
   }
 }
 
-setBgAPI()
+// setBgAPI()
 
 function getSlideNext() {
   setBgAPI()
@@ -487,6 +487,11 @@ const audioCheckbox = document.querySelector('#audio')
 
 function toggleSettings() {
   settingsMenu.classList.toggle('settings-hide')
+  if (settingsMenu.classList.contains('settings-hide')) {
+    settingsGear.style.transform = 'rotate(-45deg)'
+  } else {
+  settingsGear.style.transform = 'rotate(45deg)'
+  }
 }
 
 settingsGear.addEventListener('click', toggleSettings)
