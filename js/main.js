@@ -28,7 +28,7 @@ function getLocalStorage() {
       getWeather()
       localizeSettings()
     } else if (localStorage.getItem('pageLangOnLoad') === null) {
-      currentLang.textContent = pageLang
+      currentLang.textContent = 'en'
     }
     
   }
