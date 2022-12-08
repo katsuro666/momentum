@@ -295,7 +295,7 @@ async function setBgAPI() {
   }
 }
 
-// setBgAPI()
+setBgAPI()
 
 function getSlideNext() {
   setBgAPI()
