@@ -20,12 +20,17 @@ function getLocalStorage() {
     getWeather()
   }
   if (localStorage.getItem('pageLangOnLoad') !== pageLang) {
-    currentLang.textContent = localStorage.getItem('pageLangOnLoad')
-    pageLang = localStorage.getItem('pageLangOnLoad')
-    showPlaceholder()
-    newQuote()
-    getWeather()
-    localizeSettings()
+    if (localStorage.getItem('pageLangOnLoad') !== null) {
+      currentLang.textContent = localStorage.getItem('pageLangOnLoad')
+      pageLang = localStorage.getItem('pageLangOnLoad')
+      showPlaceholder()
+      newQuote()
+      getWeather()
+      localizeSettings()
+    } else if (localStorage.getItem('pageLangOnLoad') === null) {
+      currentLang.textContent = pageLang
+    }
+    
   }
 }
 
