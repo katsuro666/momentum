@@ -267,7 +267,7 @@ body {
 }
 
 .quote-container {
-  transition: 0.3s;
+  transition: all 1s ease;
 }
 
 .change-quote {
@@ -439,7 +439,6 @@ input:checked + .slider:before {
 
 .hide-from-settings {
   opacity: 0;
-  
 }
 
 .greeting-placeholder {
@@ -473,4 +472,3 @@ input:checked + .slider:before {
     padding: 5px;
   }
 }
-
